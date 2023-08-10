@@ -54,16 +54,6 @@ const movieSchema = new mongoose.Schema(
     },
     movieId: {
       type: Number,
-      // написать валидацию и связь с сервисаом MoviesExplorer, откуда приходить id !!!!
-      /* validate: {
-        validator: async function(value) {
-          const response = await fetch('https://???');
-          const responseData = await response.json();
-          // Вернуть true, если валидатор пройден успешно, иначе false
-          return responseData.someCondition === value.someCondition;
-        },
-        message: 'Поле data ожидает ответа от стороннего сервиса'
-      }, */
       required: [true, 'Поле "movieId" обязательно для заполнения'],
     },
     nameRU: {

@@ -1,13 +1,13 @@
 const router = require('express').Router();
-const { createMovies } = require('../controllers/movies');
+const { createMovies, getMovies, deleteMovies } = require('../controllers/movies');
 
 // возвращает все сохранённые текущим пользователем фильмы
-// GET /movies
+router.get('/', getMovies);
 
 // создаёт фильм с переданными в теле
 router.post('/', createMovies);
 
 // удаляет сохранённый фильм по id
-// DELETE /movies/_id
+router.delete('/:id', deleteMovies);
 
 module.exports = router;
