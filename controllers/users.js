@@ -104,21 +104,19 @@ const getUser = (req, res, next) => {
 const updateUser = (req, res, next) => {
   // находим пользователя по id
   const id = req.user._id;// +
-  console.log(id);
   const { email, name } = req.body;// +
-  console.log(req.body);
-  /* User.findByIdAndUpdate(id, { email, name }, { new: true, runValidators: true })
-  then((user) => {
-    console.log(user);
-    res.send(user);
-  })
+  User.findByIdAndUpdate(id, { email, name }, { new: true, runValidators: true })
+    .then((user) => {
+      console.log(user);
+      res.send(user);
+    })
     .catch((err) => {
       if (err.name === 'ValidationError' || err.name === 'CastError') {
         next(ErrorBadRequest('Введены некорректные данные'));
       } else {
         next(err);
       }
-    }); */
+    });
 };
 
 module.exports = {
