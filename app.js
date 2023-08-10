@@ -7,7 +7,7 @@ const { celebrate, Joi, errors } = require('celebrate');// валидация
 const mongoose = require('mongoose');// могнус БД
 // подключили роуты
 const usersRouter = require('./routes/users');
-// const moviesRouter = require('./routes/movies');
+const moviesRouter = require('./routes/movies');
 // контроллеры
 const { createUser, login } = require('./controllers/users');
 // мидлвары
@@ -68,6 +68,7 @@ app.use(auth);
 
 // слушаем роуты
 app.use('/users', usersRouter);
+app.use('/movies', moviesRouter);
 
 // дружим с данными из .env
 mongoose.connect(NODE_ENV === 'production' ? DB_PRODUCTION : DB_URL, {
