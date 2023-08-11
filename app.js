@@ -5,6 +5,7 @@ const bodyParser = require('body-parser');// чтобы читать JSON
 const cookieParser = require('cookie-parser');// работаем с куками
 const { celebrate, Joi, errors } = require('celebrate');// валидация
 const mongoose = require('mongoose');// могнус БД
+const { requestLogger, errorLogger } = require('./middlewares/logger');// логги
 // подключили роуты
 const usersRouter = require('./routes/users');
 const moviesRouter = require('./routes/movies');
@@ -34,6 +35,9 @@ app.use(helmet());
 app.use(bodyParser.json());
 // подключаем cookie-parser (анализирует cookie и записывает данные в req.cookies)
 app.use(cookieParser());
+
+// подключаем логгер запросов
+app.use(requestLogger);
 
 // роут регистрации
 app.post(
@@ -78,12 +82,12 @@ mongoose.connect(NODE_ENV === 'production' ? DB_PRODUCTION : DB_URL, {
   family: 4,
 });
 
-// роуты
-// const usersRouter = require('./routes/users');
-// const moviesRouter = require('./routes/movies');
 app.use('/*', (req, res, next) => {
   next(new ErrorNotFound('Ой! Такой страницы не существует!'));
 });
+
+// подключаем логгер ошибок
+app.use(errorLogger);
 
 app.use(errors());// ошибки celebrate
 // централизованный обработчик ошибок

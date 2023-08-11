@@ -4,6 +4,7 @@ const User = require('../models/user');
 // ошибки
 const ErrorBadRequest = require('../errors/ErrorBadRequest');// 400
 const ErrorAuth = require('../errors/ErrorAuth');// 401
+const ErrorConflict = require('../errors/ErrorConflict');// 409
 
 // достаем секретный ключ в отдельной env переменной, либо альтернативный, если нет .env
 const { JWT_SECRET = 'development-secret' } = process.env;
@@ -105,6 +106,7 @@ const updateUser = (req, res, next) => {
   // находим пользователя по id
   const id = req.user._id;// +
   const { email, name } = req.body;// +
+  console.log(email);
   User.findByIdAndUpdate(id, { email, name }, { new: true, runValidators: true })
     .then((user) => {
       console.log(user);
@@ -113,6 +115,8 @@ const updateUser = (req, res, next) => {
     .catch((err) => {
       if (err.name === 'ValidationError' || err.name === 'CastError') {
         next(ErrorBadRequest('Введены некорректные данные'));
+      } else if (err.code === 11000) {
+        next(new ErrorConflict('Пользователь с таким email уже зарегистрирован'));
       } else {
         next(err);
       }
