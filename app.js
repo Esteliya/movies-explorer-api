@@ -30,7 +30,7 @@ const app = express();
 
 const corsOptions = {
   origin: [
-    // 'https://создать и вписать домен фронта',
+    'https://mymovies.nomoreparties.co',
     'http://localhost:3000',
     'http://localhost:3001',
   ],
