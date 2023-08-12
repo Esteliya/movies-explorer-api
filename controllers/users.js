@@ -83,7 +83,6 @@ const getSignout = (req, res, next) => {
 };
 
 // возвращает информацию о пользователе (email и имя)
-// GET /users/me
 const getUser = (req, res, next) => {
   // находим пользователя по id
   const id = req.user._id;
@@ -101,15 +100,12 @@ const getUser = (req, res, next) => {
 };
 
 // обновляет информацию о пользователе (email и имя)
-// PATCH /users/me
 const updateUser = (req, res, next) => {
   // находим пользователя по id
   const id = req.user._id;// +
   const { email, name } = req.body;// +
-  console.log(email);
   User.findByIdAndUpdate(id, { email, name }, { new: true, runValidators: true })
     .then((user) => {
-      console.log(user);
       res.send(user);
     })
     .catch((err) => {
