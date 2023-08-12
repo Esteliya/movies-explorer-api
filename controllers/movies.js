@@ -71,7 +71,8 @@ const deleteMovies = (req, res, next) => {
         Movies.findByIdAndRemove(id)
           .then(() => {
             res.send({ message: 'Фильм успешно удален' });
-          });
+          })
+          .catch(next);// если произошла ошибка удаления => падаем в ошибки
       }
     })
     .catch((err) => {

@@ -5,6 +5,7 @@ const bodyParser = require('body-parser');// чтобы читать JSON
 const cookieParser = require('cookie-parser');// работаем с куками
 const { celebrate, Joi, errors } = require('celebrate');// валидация
 const mongoose = require('mongoose');// могнус БД
+const cors = require('cors');
 const { requestLogger, errorLogger } = require('./middlewares/logger');// логги
 // подключили роуты
 const usersRouter = require('./routes/users');
@@ -26,6 +27,18 @@ const {
 } = process.env;
 
 const app = express();
+
+const corsOptions = {
+  origin: [
+    // 'https://создать и вписать домен фронта',
+    'http://localhost:3000',
+    'http://localhost:3001',
+  ],
+  methods: ['GET', 'POST', 'PATCH', 'DELETE'],
+  credentials: true,
+};
+
+app.use(cors(corsOptions));
 
 // защищаем приложение, применяя библиотеку Helmet
 app.use(helmet());
