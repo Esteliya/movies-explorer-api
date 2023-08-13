@@ -3,7 +3,6 @@ const { celebrate, Joi } = require('celebrate');// валидация
 // регулярки
 const regUrl = /https?:\/\/(www\.)?[-a-zA-Z0-9@:%._\\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_\\+.~#?&//=]*)/;
 const regEn = /^[a-zA-Z\s-]+$/;
-const regId = /^[a-z0-9]+$/;
 
 // валидация логина
 const loginValid = celebrate({
@@ -43,7 +42,7 @@ const movieVali = celebrate({
 // + максимальная длина для примера 25 знаков (взято из БД)
 const movieIdValid = celebrate({
   params: Joi.object().keys({
-    movieId: Joi.string().max(25).required().pattern(regId),
+    movieId: Joi.string().required().hex().length(24),
   }),
 });
 
