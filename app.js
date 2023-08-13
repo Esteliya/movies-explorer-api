@@ -9,19 +9,22 @@ const mongoose = require('mongoose');// могнус БД
 const cors = require('cors');
 const { requestLogger, errorLogger } = require('./middlewares/logger');// логги
 // подключили роуты
-const usersRouter = require('./routes/users');
-const moviesRouter = require('./routes/movies');
+const routers = require('./routes/index');
+// const usersRouter = require('./routes/users');
+// const moviesRouter = require('./routes/movies');
 // контроллеры
-const { createUser, login } = require('./controllers/users');
+// const { createUser, login } = require('./controllers/users');
 // мидлвары
-const { auth } = require('./middlewares/auth');
+// const { auth } = require('./middlewares/auth');
 const errorHandler = require('./middlewares/errorHandler');
 // ошибки
 const ErrorNotFound = require('./errors/ErrorNotFound');
 // валидация
-const { loginValid, chekinValid } = require('./configs/validation');
+// const { loginValid, chekinValid } = require('./configs/validation');
 // лимит запросов
 const limiter = require('./configs/limiter');
+// опции cors
+const corsOptions = require('./configs/cors');
 
 // env переменные
 const {
@@ -35,16 +38,6 @@ const app = express();
 
 // применяем лимит запросов
 app.use(limiter);
-
-const corsOptions = {
-  origin: [
-    'https://mymovies.nomoreparties.co',
-    'http://localhost:3000',
-    'http://localhost:3001',
-  ],
-  methods: ['GET', 'POST', 'PATCH', 'DELETE'],
-  credentials: true,
-};
 
 app.use(cors(corsOptions));
 
@@ -60,18 +53,20 @@ app.use(cookieParser());
 // подключаем логгер запросов
 app.use(requestLogger);
 
+app.use(routers);
+
 // роут регистрации + валидация
-app.post('/signup', chekinValid, createUser);
+// app.post('/signup', chekinValid, createUser);
 
 // роут авторизации + валидация
-app.post('/signin', loginValid, login);
+// app.post('/signin', loginValid, login);
 
 // защищаем роуты авторизацией: клиент не прислал JWT => доступ к роутам ему закрыт.
-app.use(auth);
+// app.use(auth);
 
 // слушаем роуты
-app.use('/users', usersRouter);
-app.use('/movies', moviesRouter);
+// app.use('/users', usersRouter);
+// app.use('/movies', moviesRouter);
 
 // дружим с данными из .env
 mongoose.connect(NODE_ENV === 'production' ? DB_PRODUCTION : DB_URL, {
