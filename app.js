@@ -3,7 +3,8 @@ const express = require('express');
 const helmet = require('helmet');
 const bodyParser = require('body-parser');// чтобы читать JSON
 const cookieParser = require('cookie-parser');// работаем с куками
-const { celebrate, Joi, errors } = require('celebrate');// валидация
+// const { celebrate, Joi, errors } = require('celebrate');// валидация
+const { errors } = require('celebrate');// валидация
 const mongoose = require('mongoose');// могнус БД
 const cors = require('cors');
 const { requestLogger, errorLogger } = require('./middlewares/logger');// логги
@@ -17,6 +18,8 @@ const { auth } = require('./middlewares/auth');
 const errorHandler = require('./middlewares/errorHandler');
 // ошибки
 const ErrorNotFound = require('./errors/ErrorNotFound');
+// валидация
+const { loginValid, chekinValid } = require('./configs/validation');
 
 // env переменные
 const {
@@ -52,30 +55,11 @@ app.use(cookieParser());
 // подключаем логгер запросов
 app.use(requestLogger);
 
-// роут регистрации
-app.post(
-  '/signup',
-  celebrate({
-    body: Joi.object().keys({
-      email: Joi.string().required().email(),
-      password: Joi.string().required().min(8),
-      name: Joi.string().min(2).max(30),
-    }),
-  }),
-  createUser,
-);
+// роут регистрации + валидация
+app.post('/signup', chekinValid, createUser);
 
-// роут авторизации
-app.post(
-  '/signin',
-  celebrate({
-    body: Joi.object().keys({
-      email: Joi.string().required().email(),
-      password: Joi.string().required().min(8),
-    }),
-  }),
-  login,
-);
+// роут авторизации + валидация
+app.post('/signin', loginValid, login);
 
 // защищаем роуты авторизацией: клиент не прислал JWT => доступ к роутам ему закрыт.
 app.use(auth);
