@@ -10,7 +10,7 @@ const ErrorConflict = require('../errors/ErrorConflict');// 409
 const { JWT_SECRET = 'development-secret' } = process.env;
 
 // регистрация пользователя
-const createUser = (req, res) => {
+const createUser = (req, res, next) => {
   const {
     email,
     password,
@@ -27,7 +27,13 @@ const createUser = (req, res) => {
       res.status(201).send(user);
     })
     .catch((err) => {
-      res.send(err);
+      if (err.name === 'ValidationError' || err.name === 'CastError') {
+        next(new ErrorBadRequest('Введены некоректные данны'));
+      } else if (err.code === 11000) {
+        next(new ErrorConflict('Пользователь с таким email уже зарегистрирован'));
+      } else {
+        next(err);
+      }
     });
 };
 
@@ -63,7 +69,7 @@ const login = (req, res, next) => {
             }).send(user);
             // console.log(token);
           } else {
-            next();
+            next(new ErrorAuth('Ошибка авторизации'));
           }
         });
     })
@@ -92,7 +98,7 @@ const getUser = (req, res, next) => {
     })
     .catch((err) => {
       if (err.name === 'ValidationError' || err.name === 'CastError') {
-        next(ErrorBadRequest('Введены некорректные данные'));
+        next(new ErrorBadRequest('Введены некорректные данные'));
       } else {
         next(err);
       }
@@ -110,7 +116,7 @@ const updateUser = (req, res, next) => {
     })
     .catch((err) => {
       if (err.name === 'ValidationError' || err.name === 'CastError') {
-        next(ErrorBadRequest('Введены некорректные данные'));
+        next(new ErrorBadRequest('Введены некорректные данные'));
       } else if (err.code === 11000) {
         next(new ErrorConflict('Пользователь с таким email уже зарегистрирован'));
       } else {

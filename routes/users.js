@@ -1,4 +1,3 @@
-const { celebrate, Joi } = require('celebrate');// валидация
 const router = require('express').Router();
 const {
   getSignout,
@@ -13,16 +12,6 @@ router.get('/signout', getSignout);
 router.get('/me', getUser);
 
 // обновляет информацию о пользователе
-router.patch(
-  '/me',
-  celebrate({
-    body: Joi.object().keys({
-      email: Joi.string().email(),
-      password: Joi.string().min(8),
-      name: Joi.string().min(2).max(30),
-    }),
-  }),
-  updateUser,
-);
+router.patch('/me', updateUser);
 
 module.exports = router;
