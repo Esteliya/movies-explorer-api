@@ -3,24 +3,14 @@ const express = require('express');
 const helmet = require('helmet');
 const bodyParser = require('body-parser');// чтобы читать JSON
 const cookieParser = require('cookie-parser');// работаем с куками
-// const { celebrate, Joi, errors } = require('celebrate');// валидация
 const { errors } = require('celebrate');// валидация
 const mongoose = require('mongoose');// могнус БД
 const cors = require('cors');
 const { requestLogger, errorLogger } = require('./middlewares/logger');// логги
 // подключили роуты
 const routers = require('./routes/index');
-// const usersRouter = require('./routes/users');
-// const moviesRouter = require('./routes/movies');
-// контроллеры
-// const { createUser, login } = require('./controllers/users');
 // мидлвары
-// const { auth } = require('./middlewares/auth');
 const errorHandler = require('./middlewares/errorHandler');
-// ошибки
-const ErrorNotFound = require('./errors/ErrorNotFound');
-// валидация
-// const { loginValid, chekinValid } = require('./configs/validation');
 // лимит запросов
 const limiter = require('./configs/limiter');
 // опции cors
@@ -53,20 +43,8 @@ app.use(cookieParser());
 // подключаем логгер запросов
 app.use(requestLogger);
 
+// подключаем ВСЕ роуты
 app.use(routers);
-
-// роут регистрации + валидация
-// app.post('/signup', chekinValid, createUser);
-
-// роут авторизации + валидация
-// app.post('/signin', loginValid, login);
-
-// защищаем роуты авторизацией: клиент не прислал JWT => доступ к роутам ему закрыт.
-// app.use(auth);
-
-// слушаем роуты
-// app.use('/users', usersRouter);
-// app.use('/movies', moviesRouter);
 
 // дружим с данными из .env
 mongoose.connect(NODE_ENV === 'production' ? DB_PRODUCTION : DB_URL, {
@@ -76,14 +54,11 @@ mongoose.connect(NODE_ENV === 'production' ? DB_PRODUCTION : DB_URL, {
   family: 4,
 });
 
-app.use('/*', (req, res, next) => {
-  next(new ErrorNotFound('Ой! Такой страницы не существует!'));
-});
-
 // подключаем логгер ошибок
 app.use(errorLogger);
 
 app.use(errors());// ошибки celebrate
+
 // централизованный обработчик ошибок
 app.use(errorHandler);
 

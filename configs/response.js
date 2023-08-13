@@ -12,6 +12,7 @@ const ERR_AUTH = 'Пользователя с таким email или парол
 const ERR_AUTH_TOTAL = 'Пользователя с таким email или паролем не существует';// 401
 const ERR_FORBIDDEN = 'У вас нет прав на удалениие данного фильма';// 403
 const NOTFOUND = 'Фильм не найден';// 404
+const NOTFOUND_PAGE = 'Ой! Такой страницы не существует!';// 404
 const ERR_CONFLICT = 'Пользователь с таким email уже зарегистрирован';// 409
 const ERR_HOST = 'На сервере произошла ошибка';// 500
 
@@ -27,6 +28,7 @@ module.exports = {
   ERR_AUTH_TOTAL,
   ERR_FORBIDDEN,
   NOTFOUND,
+  NOTFOUND_PAGE,
   ERR_CONFLICT,
   ERR_HOST,
 };

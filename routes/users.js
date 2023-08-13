@@ -1,12 +1,12 @@
 const router = require('express').Router();
 const {
-  getSignout,
+  // getSignout,
   getUser,
   updateUser,
 } = require('../controllers/users');
 
 // выход из аккаунта
-router.get('/signout', getSignout);
+// router.get('/signout', getSignout);
 
 // возвращает информацию о пользователе (email и имя)
 router.get('/me', getUser);

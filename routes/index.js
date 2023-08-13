@@ -5,9 +5,13 @@ const moviesRouter = require('./movies');
 // мидлвары
 const { auth } = require('../middlewares/auth');
 // контроллеры
-const { createUser, login } = require('../controllers/users');
+const { createUser, login, getSignout } = require('../controllers/users');
 // валидация
 const { loginValid, chekinValid } = require('../configs/validation');
+// ошибки
+const ErrorNotFound = require('../errors/ErrorNotFound');
+// ответы
+const { NOTFOUND_PAGE } = require('../configs/response');
 
 const routers = express();
 
@@ -21,7 +25,12 @@ routers.post('/signin', loginValid, login);
 routers.use(auth);
 
 // слушаем роуты
+routers.get('/signout', getSignout);
 routers.use('/users', usersRouter);
 routers.use('/movies', moviesRouter);
+
+routers.use('/*', (req, res, next) => {
+  next(new ErrorNotFound(NOTFOUND_PAGE));
+});
 
 module.exports = routers;
