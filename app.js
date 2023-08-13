@@ -20,6 +20,8 @@ const errorHandler = require('./middlewares/errorHandler');
 const ErrorNotFound = require('./errors/ErrorNotFound');
 // валидация
 const { loginValid, chekinValid } = require('./configs/validation');
+// лимит запросов
+const limiter = require('./configs/limiter');
 
 // env переменные
 const {
@@ -30,6 +32,9 @@ const {
 } = process.env;
 
 const app = express();
+
+// применяем лимит запросов
+app.use(limiter);
 
 const corsOptions = {
   origin: [
