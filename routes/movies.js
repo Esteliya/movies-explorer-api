@@ -1,7 +1,8 @@
 // const { celebrate, Joi } = require('celebrate');
 const router = require('express').Router();
 const { createMovies, getMovies, deleteMovies } = require('../controllers/movies');
-const { movieVali } = require('../configs/validation');
+// валидация
+const { movieVali, movieIdValid } = require('../configs/validation');
 
 // возвращает все сохранённые текущим пользователем фильмы
 router.get('/', getMovies);
@@ -10,6 +11,6 @@ router.get('/', getMovies);
 router.post('/', movieVali, createMovies);
 
 // удаляет сохранённый фильм по id
-router.delete('/:id', deleteMovies);
+router.delete('/:id', movieIdValid, deleteMovies);
 
 module.exports = router;
