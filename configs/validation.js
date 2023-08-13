@@ -21,6 +21,14 @@ const chekinValid = celebrate({
   }),
 });
 
+// валидация обновления данных пользователя
+const userUpdateValid = celebrate({
+  body: Joi.object().keys({
+    email: Joi.string().email(),
+    name: Joi.string().min(2).max(30),
+  }),
+});
+
 // валидация добавления фильма
 const movieVali = celebrate({
   body: Joi.object().keys({
@@ -39,7 +47,6 @@ const movieVali = celebrate({
 });
 
 // валидация id фильма (цифры + латинские буквы)
-// + максимальная длина для примера 25 знаков (взято из БД)
 const movieIdValid = celebrate({
   params: Joi.object().keys({
     movieId: Joi.string().required().hex().length(24),
@@ -51,4 +58,5 @@ module.exports = {
   chekinValid,
   movieVali,
   movieIdValid,
+  userUpdateValid,
 };

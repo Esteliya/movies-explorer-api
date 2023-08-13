@@ -1,4 +1,7 @@
 const router = require('express').Router();
+
+const { userUpdateValid } = require('../configs/validation');
+
 const {
   getUser,
   updateUser,
@@ -8,6 +11,6 @@ const {
 router.get('/me', getUser);
 
 // обновляет информацию о пользователе
-router.patch('/me', updateUser);
+router.patch('/me', userUpdateValid, updateUser);
 
 module.exports = router;
