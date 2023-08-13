@@ -1,8 +1,9 @@
+const { CODE_403 } = require('../configs/response');
 //  Ошибка: доступ к запрошенному ресурсу запрещен
 class ErrorForbidden extends Error {
   constructor(message) {
     super(message);
-    this.statusCode = 403;
+    this.statusCode = CODE_403;
   }
 }
 

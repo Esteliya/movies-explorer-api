@@ -5,6 +5,13 @@ const User = require('../models/user');
 const ErrorBadRequest = require('../errors/ErrorBadRequest');// 400
 const ErrorAuth = require('../errors/ErrorAuth');// 401
 const ErrorConflict = require('../errors/ErrorConflict');// 409
+// константы сообщений ответов
+const {
+  BAD_REQUEST,
+  ERR_AUTH,
+  ERR_AUTH_TOTAL,
+  ERR_CONFLICT,
+} = require('../configs/response');
 
 // достаем секретный ключ в отдельной env переменной, либо альтернативный, если нет .env
 const { JWT_SECRET = 'development-secret' } = process.env;
@@ -28,9 +35,9 @@ const createUser = (req, res, next) => {
     })
     .catch((err) => {
       if (err.name === 'ValidationError' || err.name === 'CastError') {
-        next(new ErrorBadRequest('Введены некоректные данны'));
+        next(new ErrorBadRequest(BAD_REQUEST));
       } else if (err.code === 11000) {
-        next(new ErrorConflict('Пользователь с таким email уже зарегистрирован'));
+        next(new ErrorConflict(ERR_CONFLICT));
       } else {
         next(err);
       }
@@ -45,7 +52,7 @@ const login = (req, res, next) => {
   } = req.body;
   // console.log(JWT_SECRET);
   User.findOne({ email })
-    .orFail(() => next(new ErrorAuth('Пользователя с таким email или паролем не существует')))
+    .orFail(() => next(new ErrorAuth(ERR_AUTH)))
     // если email существует в базе —> пользователь в переменной user
     .then((user) => {
       // проверяем пароль
@@ -69,7 +76,7 @@ const login = (req, res, next) => {
             }).send(user);
             // console.log(token);
           } else {
-            next(new ErrorAuth('Ошибка авторизации'));
+            next(new ErrorAuth(ERR_AUTH_TOTAL));
           }
         });
     })
@@ -98,7 +105,7 @@ const getUser = (req, res, next) => {
     })
     .catch((err) => {
       if (err.name === 'ValidationError' || err.name === 'CastError') {
-        next(new ErrorBadRequest('Введены некорректные данные'));
+        next(new ErrorBadRequest(BAD_REQUEST));
       } else {
         next(err);
       }
@@ -116,9 +123,9 @@ const updateUser = (req, res, next) => {
     })
     .catch((err) => {
       if (err.name === 'ValidationError' || err.name === 'CastError') {
-        next(new ErrorBadRequest('Введены некорректные данные'));
+        next(new ErrorBadRequest(BAD_REQUEST));
       } else if (err.code === 11000) {
-        next(new ErrorConflict('Пользователь с таким email уже зарегистрирован'));
+        next(new ErrorConflict(ERR_CONFLICT));
       } else {
         next(err);
       }

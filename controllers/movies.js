@@ -3,6 +3,13 @@ const ErrorBadRequest = require('../errors/ErrorBadRequest');// 400
 const ErrorForbidden = require('../errors/ErrorForbidden');// 403
 const ErrorNotFound = require('../errors/ErrorNotFound');// 404
 
+// константы сообщений ответов
+const {
+  BAD_REQUEST,
+  ERR_FORBIDDEN,
+  NOTFOUND,
+} = require('../configs/response');
+
 // возвращает все сохранённые текущим пользователем фильмы
 const getMovies = (req, res, next) => {
   const userId = req.user._id;
@@ -49,7 +56,7 @@ const createMovies = (req, res, next) => {
     .catch((err) => {
       // res.send(err)
       if (err.name === 'ValidationError' || err.name === 'CastError') {
-        next(new ErrorBadRequest('Введены некоректные данны'));
+        next(new ErrorBadRequest(BAD_REQUEST));
       } else {
         next(err);
       }
@@ -60,12 +67,12 @@ const createMovies = (req, res, next) => {
 const deleteMovies = (req, res, next) => {
   const { id } = req.params;
   Movies.findById(id)
-    .orFail(() => next(new ErrorNotFound('Фильм не найден')))
+    .orFail(() => next(new ErrorNotFound(NOTFOUND)))
     .then((movie) => {
       // фильм пользователя?
       // нет - удаление невозможно
       if (req.user._id !== movie.owner.toString()) {
-        next(new ErrorForbidden('У вас нет прав на удалениие данного фильма'));
+        next(new ErrorForbidden(ERR_FORBIDDEN));
       } else {
         // если да, то удаляем фильм
         Movies.findByIdAndRemove(id)
@@ -77,7 +84,7 @@ const deleteMovies = (req, res, next) => {
     })
     .catch((err) => {
       if (err.name === 'ValidationError' || err.name === 'CastError') {
-        next(new ErrorBadRequest('Введены некоректные данны'));
+        next(new ErrorBadRequest(BAD_REQUEST));
       } else {
         next(err);
       }
