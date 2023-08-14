@@ -10,6 +10,7 @@ const CODE_500 = '500';// Сервер
 const BAD_REQUEST = 'Введены некоректные данны';// 400
 const ERR_AUTH = 'Пользователя с таким email или паролем не существует';// 401
 const ERR_AUTH_TOTAL = 'Пользователя с таким email или паролем не существует';// 401
+const ERR_REQ_AUTH = 'Доступ к запрашиваемому ресурсу закрыт. Требуется аутентификация';// 401
 const ERR_FORBIDDEN = 'У вас нет прав на удалениие данного фильма';// 403
 const NOTFOUND = 'Фильм не найден';// 404
 const NOTFOUND_PAGE = 'Ой! Такой страницы не существует!';// 404
@@ -26,6 +27,7 @@ module.exports = {
   BAD_REQUEST,
   ERR_AUTH,
   ERR_AUTH_TOTAL,
+  ERR_REQ_AUTH,
   ERR_FORBIDDEN,
   NOTFOUND,
   NOTFOUND_PAGE,
