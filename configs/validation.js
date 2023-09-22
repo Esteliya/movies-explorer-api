@@ -49,7 +49,7 @@ const movieVali = celebrate({
 // валидация id фильма (цифры + латинские буквы)
 const movieIdValid = celebrate({
   params: Joi.object().keys({
-    movieId: Joi.string().required().hex().length(24),
+    id: Joi.string().required().hex().length(24),
   }),
 });
 

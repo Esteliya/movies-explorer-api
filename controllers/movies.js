@@ -75,7 +75,7 @@ const deleteMovies = (req, res, next) => {
         next(new ErrorForbidden(ERR_FORBIDDEN));
       } else {
         // если да, то удаляем фильм
-        Movies.findByIdAndRemove(id)
+        Movies.deleteOne(movie)
           .then(() => {
             res.send({ message: 'Фильм успешно удален' });
           })
