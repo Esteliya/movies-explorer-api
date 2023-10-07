@@ -17,7 +17,7 @@ const userSchema = new mongoose.Schema(
       required: [true, 'Поле "password" обязательно для заполнения'],
       validate: {
         validator: (v) => validator.isStrongPassword(v),
-        message: 'Ненадежный пароль. Пароль должен быль не менее 8 символов и содержать цифру, прописную и строчную буквы.',
+        message: 'Ненадежный пароль. Пароль должен быть не менее 8 символов и содержать цифру, прописную и строчную буквы.',
       },
     },
     name: {

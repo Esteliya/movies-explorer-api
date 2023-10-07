@@ -63,7 +63,7 @@ const movieSchema = new mongoose.Schema(
     nameEN: {
       type: String,
       validate: {
-        validator: (v) => validator.matches(v, /^[a-zA-Z\s-]+$/),
+        validator: (v) => validator.matches(v, /^[a-zA-Z\s-,.]+$/),
         message: 'Поле "nameEN" должно содержать только латинские буквы',
       },
       required: [true, 'Поле "nameEN" обязательно для заполнения'],
