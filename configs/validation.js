@@ -2,7 +2,7 @@ const { celebrate, Joi } = require('celebrate');// валидация
 
 // регулярки
 const regUrl = /https?:\/\/(www\.)?[-a-zA-Z0-9@:%._\\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_\\+.~#?&//=]*)/;
-const regEn = /^[0-9a-zA-Z\s-,.’'!?:—]+$/;
+// const regEn = /^[0-9a-zA-Z\s-,.’'!?:—]+$/;
 
 // валидация логина
 const loginValid = celebrate({
@@ -42,7 +42,7 @@ const movieVali = celebrate({
     thumbnail: Joi.string().required().pattern(regUrl),
     movieId: Joi.number().required(),
     nameRU: Joi.string().required(),
-    nameEN: Joi.string().required().pattern(regEn),
+    nameEN: Joi.string().required(),
   }),
 });
 
